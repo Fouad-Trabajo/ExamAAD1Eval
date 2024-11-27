@@ -23,37 +23,72 @@ class XmlEx1LocalDataSource(private val context: Context) {
 
     fun saveAllUsers(users: List<User>) {
         users.forEach { user ->
-            sharedPref.edit().putString(user.id, user.name).apply()
+            val userJson = gson.toJson(user)
+            sharedPref.edit().putString(user.id, userJson).apply()
         }
     }
 
 
     fun saveAllItems(items: List<Item>) {
         items.forEach { item ->
-            sharedPref.edit().putString(item.id, item.name).apply()
+            val itemJson = gson.toJson(item)
+            sharedPref.edit().putString(item.id, itemJson).apply()
         }
     }
 
     fun saveAllServices(services: List<Services>) {
         services.forEach { service ->
-            sharedPref.edit().putString(service.id, service.name).apply()
+            val serviceJson = gson.toJson(service)
+            sharedPref.edit().putString(service.id, serviceJson).apply()
         }
     }
 
 
     fun getAllUsers(): List<User> {
         val users = mutableListOf<User>()
+        val userKeys = sharedPref.getStringSet("user_keys", setOf())
+        if (userKeys != null) {
+            for (userKey in userKeys) {
+                val userJson = sharedPref.getString(userKey, null)
+                if (userJson != null) {
+                    val user = gson.fromJson(userJson, User::class.java)
+                    users.add(user)
+                }
+            }
+        }
         return users
     }
 
+
+
     fun getAllItems(): List<Item> {
-        val items = mutableListOf<Item>()
+       val items = mutableListOf<Item>()
+        val item = sharedPref.getStringSet("item_keys", setOf())
+        if (item != null) {
+            for (user in item) {
+                val item = sharedPref.getString(user, null)
+                if (item != null) {
+                    val item = gson.fromJson(item, Item::class.java)
+                    items.add(item)
+                }
+            }
+        }
         return items
     }
 
 
     fun getAllServices(): List<Services> {
         val services = mutableListOf<Services>()
+        val itemKeys = sharedPref.getStringSet("item_keys", setOf())
+        if (itemKeys != null) {
+            for (service in itemKeys) {
+                val service = sharedPref.getString(service, null)
+                if (service != null) {
+                    val service = gson.fromJson(service, Services::class.java)
+                    services.add(service)
+                }
+            }
+        }
         return services
     }
 }
