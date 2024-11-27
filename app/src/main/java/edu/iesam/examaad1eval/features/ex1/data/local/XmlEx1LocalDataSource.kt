@@ -23,28 +23,45 @@ class XmlEx1LocalDataSource(private val context: Context) {
 
     fun saveAllUsers(users: List<User>) {
         users.forEach { user ->
-            sharedPref.edit().putString(user.id, user.name).apply()
+           // sharedPref.edit().putString(user.id, user.name).apply()
+            val userJson = gson.toJson(user)
+            sharedPref.edit().putString(user.id, userJson).apply()
         }
     }
 
 
     fun saveAllItems(items: List<Item>) {
         items.forEach { item ->
-            sharedPref.edit().putString(item.id, item.name).apply()
+            val itemJson = gson.toJson(item)
+            sharedPref.edit().putString(item.id, itemJson).apply()
         }
     }
 
     fun saveAllServices(services: List<Services>) {
         services.forEach { service ->
-            sharedPref.edit().putString(service.id, service.name).apply()
+            val serviceJson = gson.toJson(service)
+            sharedPref.edit().putString(service.id, serviceJson).apply()
         }
     }
 
-
     fun getAllUsers(): List<User> {
         val users = mutableListOf<User>()
+        val allKeys = sharedPref.all.keys
+        for (key in allKeys) {
+            if (key.startsWith("user_")) {
+                val userJson = sharedPref.getString(key, null)
+                if (userJson != null) {
+                    val user = gson.fromJson(userJson, User::class.java)
+                    users.add(user)
+                }
+            }
+        }
         return users
     }
+
+
+
+
 
     fun getAllItems(): List<Item> {
         val items = mutableListOf<Item>()
