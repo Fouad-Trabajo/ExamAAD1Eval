@@ -12,21 +12,37 @@ class Ex1DataRepository(
     private val xmlEx1LocalDataSource: XmlEx1LocalDataSource
 ) : Ex1Repository {
 
+
     override fun getUsers(): List<User> {
         val usersFromLocal = xmlEx1LocalDataSource.getUsers()
         return if (usersFromLocal.isEmpty()) {
             val usersFromRemote = mockEx1RemoteDataSource.getUsers()
             xmlEx1LocalDataSource.saveUsers(usersFromRemote)
-        } else {
+            usersFromRemote
+        } else{
             usersFromLocal
         }
     }
 
     override fun getItems(): List<Item> {
-        TODO("Not yet implemented")
+        val itemsFromLocal = xmlEx1LocalDataSource.getItems()
+        return if (itemsFromLocal.isEmpty()) {
+            val itemsFromRemote = mockEx1RemoteDataSource.getItems()
+            xmlEx1LocalDataSource.saveItems(itemsFromRemote)
+            itemsFromRemote
+        } else{
+            itemsFromLocal
+        }
     }
 
     override fun getServices(): List<Services> {
-        TODO("Not yet implemented")
+        val servicesFromLocal = xmlEx1LocalDataSource.getServices()
+        return if (servicesFromLocal.isEmpty()) {
+            val servicesFromRemote = mockEx1RemoteDataSource.getServices()
+            xmlEx1LocalDataSource.saveServices(servicesFromRemote)
+            servicesFromRemote
+        } else{
+            servicesFromLocal
+        }
     }
 }
