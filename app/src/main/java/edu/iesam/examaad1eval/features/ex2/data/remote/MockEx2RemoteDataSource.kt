@@ -1,4 +1,7 @@
-package edu.iesam.examaad1eval.features.ex2
+package edu.iesam.examaad1eval.features.ex2.data.remote
+
+import edu.iesam.examaad1eval.features.ex2.domain.Game
+import edu.iesam.examaad1eval.features.ex2.domain.Player
 
 class MockEx2RemoteDataSource {
 
@@ -17,7 +20,7 @@ class MockEx2RemoteDataSource {
     private fun getPlayers(): List<Player>{
         return listOf(
             Player("1", "Juan"),
-            Player(id = "2", name = "Pepe")
+            Player("2", "Pepe")
         ).shuffled()
     }
 
